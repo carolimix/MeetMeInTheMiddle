@@ -4,12 +4,27 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Meet Me in the Middle</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.maptiler.com/maptiler-sdk-js/v1.1.1/maptiler-sdk.umd.min.js"></script>
+    <link
+      href="https://cdn.maptiler.com/maptiler-sdk-js/v1.1.1/maptiler-sdk.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://unpkg.com/@maptiler/geocoding-control/dist/style.css"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <label for="pointA">Point A</label>
-    <input type="text" id="pointA" />
-    <label for="pointB">Point B</label>
-    <input type="text" id="pointB" />
+    <div id="map"></div>
+    <div id="search">
+      <label for="pointA">Point A:</label>
+      <input type="text" id="pointA" />
+      <label for="pointB">Point B:</label>
+      <input type="text" id="pointB" />
+      <button onclick="findMiddlePoint()">Find a middle point</button>
+    </div>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="app.js"></script>
   </body>
 </html>

@@ -1,0 +1,37 @@
+/* body {
+  margin: 0;
+  padding: 0;
+}
+
+#map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+}
+
+#search {
+  position: fixed;
+}
+ */
+body {
+  margin: 0;
+  padding: 0;
+}
+
+#map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 60%; /* Ajusta el ancho según tus necesidades */
+}
+
+#search {
+  position: fixed;
+  top: 10px;
+  padding: 10px;
+  background-color: rgba(238, 130, 238, 0.5);
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  display: flex;
+}
