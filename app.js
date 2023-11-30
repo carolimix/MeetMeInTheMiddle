@@ -1,12 +1,13 @@
-/* async function findMiddlePoint() {
+async function fetchLocation(query) {
   let apiKey = "ZFeDzfLS6em5gdSibPQC";
-  let apiUrl = `https://api.maptiler.com/search?q=${location}&key=${apiKey}`;
+  let apiUrl =
+    "https://api.maptiler.com/geocoding/" + query + ".json?key=" + apiKey;
   let response = await fetch(apiUrl);
   let data = await response.json();
-  console.log(`Coordenadas de ${location}:`, data);
+  let center = data.features[0].center;
+  console.log(`Coordenadas de ${query}:`, center);
+  return center;
 }
-findMiddlePoint();
- */
 
 maptilersdk.config.apiKey = "ZFeDzfLS6em5gdSibPQC";
 const map = new maptilersdk.Map({
@@ -15,39 +16,17 @@ const map = new maptilersdk.Map({
   geolocate: maptilersdk.GeolocationType.POINT,
 });
 
-const geocodingControl = new maptilersdk.GeocodingControl({
-  apiKey: maptilersdk.config.apiKey, // Utiliza la variable apiKey
-});
-// Añade el control al mapa
-map.addControl(geocodingControl);
-
-function findMiddlePoint() {
+async function findMiddlePoint() {
   let pointA = document.getElementById("pointA").value;
   let pointB = document.getElementById("pointB").value;
+  let resultA = await fetchLocation(pointA);
+  let resultB = await fetchLocation(pointB);
+  let middlePoint = [
+    (resultA[0] + resultB[0]) / 2,
+    (resultA[1] + resultB[1]) / 2,
+  ];
+  console.log(map, resultA, resultB, middlePoint);
 
-  geocodingControl.geocode(pointA, function (resultA) {
-    geocodingControl.geocode(pointB, function (resultB) {
-      // Ahora, resultA y resultB contienen información sobre las coordenadas de las direcciones
-
-      // Calcula el punto medio y haz lo que necesites con él
-      let middlePoint = [
-        (resultA.features[0].geometry.coordinates[0] +
-          resultB.features[0].geometry.coordinates[0]) /
-          2,
-        (resultA.features[0].geometry.coordinates[1] +
-          resultB.features[0].geometry.coordinates[1]) /
-          2,
-      ];
-
-      // Haz algo con el punto medio, como centrar el mapa en él
-      map.setView(middlePoint, 13);
-    });
-  });
+  map.setCenter(middlePoint, 13);
+  const marker = new maptilersdk.Marker().setLngLat(middlePoint).addTo(map);
 }
-
-/* async function getCoordinates() {
-  fetch("https://api.example.com/data")
-    .then((response) => response.json())
-    .then((data) => console.log(data))
-    .catch((error) => console.error("Error:", error));
-} */
