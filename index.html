@@ -10,20 +10,22 @@
       href="https://cdn.maptiler.com/maptiler-sdk-js/v1.1.1/maptiler-sdk.css"
       rel="stylesheet"
     />
+    <script src="https://cdn.maptiler.com/maptiler-geocoding-control/v1.1.0/vanilla.umd.js"></script>
     <link
-      href="https://unpkg.com/@maptiler/geocoding-control/dist/style.css"
+      href="https://cdn.maptiler.com/maptiler-geocoding-control/v1.1.0/style.css"
       rel="stylesheet"
     />
   </head>
   <body>
     <div id="map"></div>
     <div id="search">
-      <label for="pointA">Point A:</label>
-      <input type="text" id="pointA" value="berlin" />
-      <label for="pointB">Point B:</label>
-      <input type="text" id="pointB" value="munich" />
+      <div id="pointA"></div>
+      <div id="pointB"></div>
       <button onclick="findMiddlePoint()">Find a middle point</button>
     </div>
+    <!-- <div id="anotherSearch"></div> -->
+    <!--  <pre id="resultsA"></pre>
+    <pre id="resultsB"></pre> -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="app.js"></script>
   </body>
