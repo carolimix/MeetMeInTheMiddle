@@ -19,13 +19,25 @@
   <body>
     <div id="map"></div>
     <div id="search">
-      <div id="pointA"></div>
-      <div id="pointB"></div>
+      <div id="pointA">
+        <label for="inputA">Point A:</label>
+      </div>
+      <div id="pointB">
+        <label for="inputB">Point B:</label>
+      </div>
+      <div id="categoryDropdown">
+        <label for="categories">Select a categorie:</label>
+        <select id="categories">
+          <option value="bar">Bar</option>
+          <option value="restaurant">Restaurante</option>
+          <option value="museum">Museo</option>
+          <option value="cafe">Cafetería</option>
+          <option value="park">Parque</option>
+          <option value="art">Arte</option>
+        </select>
+      </div>
       <button onclick="findMiddlePoint()">Find a middle point</button>
     </div>
-    <!-- <div id="anotherSearch"></div> -->
-    <!--  <pre id="resultsA"></pre>
-    <pre id="resultsB"></pre> -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="app.js"></script>
   </body>

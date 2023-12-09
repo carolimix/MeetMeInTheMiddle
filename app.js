@@ -13,17 +13,17 @@ async function fetchLocation(query) {
   return center;
 }
 
+// Configuration for MapTiler SDK
 maptilersdk.config.apiKey = "ZFeDzfLS6em5gdSibPQC";
+
+// Create a new Map with MapTiler SDK
 const map = new maptilersdk.Map({
   container: "map",
   style: maptilersdk.MapStyle.STREETS,
   geolocate: maptilersdk.GeolocationType.POINT,
 });
 
-let popup = new maptilersdk.Popup({ offset: 25 }).setText(
-  "Este es el punto medio entre nuestras casas amiga"
-);
-
+// Create Geocoding controls for Point A and Point B
 const geocodingControlA = new maptilerGeocoder.GeocodingControl({
   apiKey: "ZFeDzfLS6em5gdSibPQC",
   target: document.getElementById("pointA"),
@@ -34,30 +34,26 @@ const geocodingControlB = new maptilerGeocoder.GeocodingControl({
   target: document.getElementById("pointB"),
 });
 
-/* geocodingControlA.addEventListener("response", (e) => {
-  document.getElementById("resultsA").innerHTML = e.detail
-    ? JSON.stringify(e.detail, null, 2)
-    : "";
-}); */
+// Function to fetch the location name based on coordinates from the middlePoint
+async function fetchReverseLocation(longitude, latitude) {
+  let apiKey = "ZFeDzfLS6em5gdSibPQC";
+  let apiUrl =
+    "https://api.maptiler.com/geocoding/" +
+    encodeURIComponent(longitude + "," + latitude) +
+    ".json?key=" +
+    apiKey;
 
-/* geocodingControlA.addEventListener("pick", (e) => {
-  document.getElementById("resultsA").innerHTML = e.detail
-    ? JSON.stringify(e.detail, null, 2)
-    : "";
-});
+  let response = await fetch(apiUrl);
+  let data = await response.json();
 
-geocodingControlB.addEventListener("response", (e) => {
-  document.getElementById("resultsB").innerHTML = e.detail
-    ? JSON.stringify(e.detail, null, 2)
-    : "";
-});
+  console.log(data);
+  let locationName = data.features[0].place_name;
+  console.log(`Coordenadas de ${longitude}${latitude}:`, locationName);
+  console.log(apiUrl);
+  return locationName;
+}
 
-geocodingControlB.addEventListener("pick", (e) => {
-  document.getElementById("resultsB").innerHTML = e.detail
-    ? JSON.stringify(e.detail, null, 2)
-    : "";
-}); */
-
+// Function to find the middle point, set a marker, and handle the popup
 async function findMiddlePoint() {
   let pointA = document.getElementById("pointA");
   let pointB = document.getElementById("pointB");
@@ -65,17 +61,44 @@ async function findMiddlePoint() {
   let inputA = pointA.querySelector("input");
   let inputB = pointB.querySelector("input");
 
-  let resultA = await fetchLocation(inputA.value);
-  let resultB = await fetchLocation(inputB.value);
+  let locationA = await fetchLocation(inputA.value);
+  let locationB = await fetchLocation(inputB.value);
   let middlePoint = [
-    (resultA[0] + resultB[0]) / 2,
-    (resultA[1] + resultB[1]) / 2,
+    (locationA[0] + locationB[0]) / 2,
+    (locationA[1] + locationB[1]) / 2,
   ];
-  console.log(map, resultA, resultB, middlePoint);
 
-  map.setCenter(middlePoint, 13);
+  let middlePointName = await fetchReverseLocation(
+    middlePoint[0],
+    middlePoint[1]
+  );
+
+  console.log(map, locationA, locationB, middlePoint, middlePointName);
+
+  //url for the maps search
+  const categoryDropdown = document.getElementById("categories");
+  const selectedCategory = categoryDropdown.value;
+
+  map.setCenter(middlePoint);
+  map.setZoom(13);
+
+  const searchUrl = `https://www.google.com/maps/search/${selectedCategory}+near+${encodeURIComponent(
+    middlePointName
+  )}`;
+
+  // Create a popup with the middle point name and a link
+  let popupText = `This is the middle point!<br/><a href="${searchUrl}" target='_blank'>Click here for Recommendations</a>`;
+
+  popupText.onclick = function () {
+    window.open(searchUrl, "_blank");
+  };
+
+  let popup = new maptilersdk.Popup({ offset: 25 }).setHTML(popupText);
+
   const marker = new maptilersdk.Marker({ color: "pink" })
     .setLngLat(middlePoint)
     .setPopup(popup)
     .addTo(map);
+
+  marker.togglePopup();
 }
