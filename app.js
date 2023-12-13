@@ -85,6 +85,7 @@ async function findMiddlePoint() {
   const searchUrl = `https://www.google.com/maps/search/${selectedCategory}+near+${encodeURIComponent(
     middlePointName
   )}`;
+  // https://www.google.com/maps/search/restaurants+near+41.40338,2.17403 can be done with lat and long isntead of name
 
   // Create a popup with the middle point name and a link
   let popupText = `This is the middle point!<br/><a href="${searchUrl}" target='_blank'>Click here for Recommendations</a>`;
@@ -99,6 +100,4 @@ async function findMiddlePoint() {
     .setLngLat(middlePoint)
     .setPopup(popup)
     .addTo(map);
-
-  marker.togglePopup();
 }
