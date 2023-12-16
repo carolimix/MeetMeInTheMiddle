@@ -88,7 +88,7 @@ async function findMiddlePoint() {
   // https://www.google.com/maps/search/restaurants+near+41.40338,2.17403 can be done with lat and long isntead of name
 
   // Create a popup with the middle point name and a link
-  let popupText = `This is the middle point!<br/><a href="${searchUrl}" target='_blank'>Click here for Recommendations</a>`;
+  let popupText = `The middle point is:<br/>${middlePointName}<br/><a href="${searchUrl}" target='_blank'>Click here for Recommendations</a>`;
 
   popupText.onclick = function () {
     window.open(searchUrl, "_blank");
