@@ -7,7 +7,8 @@ body {
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 90%;
+  width: 100%;
+  height: 100%;
 }
 
 #search {
@@ -20,6 +21,8 @@ body {
   border-radius: 5px;
   display: flex;
   align-items: center;
+  max-width: 400px;
+  width: 90%;
 }
 
 #pointA,
@@ -55,4 +58,25 @@ button {
 
 button:hover {
   background-color: #45a049;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Media query para pantallas pequeñas */
+@media screen and (max-width: 600px) {
+  #search {
+    width: 90%; /* Ajusta el tamaño para pantallas pequeñas */
+    flex-direction: column; /* Cambia la dirección del flexbox para apilar verticalmente los elementos */
+    align-items: flex-start; /* Alinea los elementos al inicio */
+  }
+
+  #pointA input,
+  #pointB input,
+  #categories,
+  button {
+    width: 100%; /* Ocupa todo el ancho en pantallas pequeñas */
+    margin-bottom: 10px; /* Agrega espacio entre los elementos */
+  }
 }

@@ -55,49 +55,54 @@ async function fetchReverseLocation(longitude, latitude) {
 
 // Function to find the middle point, set a marker, and handle the popup
 async function findMiddlePoint() {
-  let pointA = document.getElementById("pointA");
-  let pointB = document.getElementById("pointB");
+  try {
+    let pointA = document.getElementById("pointA");
+    let pointB = document.getElementById("pointB");
 
-  let inputA = pointA.querySelector("input");
-  let inputB = pointB.querySelector("input");
+    let inputA = pointA.querySelector("input");
+    let inputB = pointB.querySelector("input");
 
-  let locationA = await fetchLocation(inputA.value);
-  let locationB = await fetchLocation(inputB.value);
-  let middlePoint = [
-    (locationA[0] + locationB[0]) / 2,
-    (locationA[1] + locationB[1]) / 2,
-  ];
+    let locationA = await fetchLocation(inputA.value);
+    let locationB = await fetchLocation(inputB.value);
+    let middlePoint = [
+      (locationA[0] + locationB[0]) / 2,
+      (locationA[1] + locationB[1]) / 2,
+    ];
 
-  let middlePointName = await fetchReverseLocation(
-    middlePoint[0],
-    middlePoint[1]
-  );
+    let middlePointName = await fetchReverseLocation(
+      middlePoint[0],
+      middlePoint[1]
+    );
 
-  console.log(map, locationA, locationB, middlePoint, middlePointName);
+    console.log(map, locationA, locationB, middlePoint, middlePointName);
 
-  //url for the maps search
-  const categoryDropdown = document.getElementById("categories");
-  const selectedCategory = categoryDropdown.value;
+    //url for the maps search
+    const categoryDropdown = document.getElementById("categories");
+    const selectedCategory = categoryDropdown.value;
 
-  map.setCenter(middlePoint);
-  map.setZoom(13);
+    map.setCenter(middlePoint);
+    map.setZoom(13);
 
-  const searchUrl = `https://www.google.com/maps/search/${selectedCategory}+near+${encodeURIComponent(
-    middlePointName
-  )}`;
-  // https://www.google.com/maps/search/restaurants+near+41.40338,2.17403 can be done with lat and long isntead of name
+    const searchUrl = `https://www.google.com/maps/search/${selectedCategory}+near+${encodeURIComponent(
+      middlePointName
+    )}`;
+    // https://www.google.com/maps/search/restaurants+near+41.40338,2.17403 can be done with lat and long isntead of name
 
-  // Create a popup with the middle point name and a link
-  let popupText = `The middle point is:<br/>${middlePointName}<br/><a href="${searchUrl}" target='_blank'>Click here for Recommendations</a>`;
+    // Create a popup with the middle point name and a link
+    let popupText = `The middle point is:<br/>${middlePointName}<br/><a href="${searchUrl}" target='_blank'>Click here for Recommendations</a>`;
 
-  popupText.onclick = function () {
-    window.open(searchUrl, "_blank");
-  };
+    popupText.onclick = function () {
+      window.open(searchUrl, "_blank");
+    };
 
-  let popup = new maptilersdk.Popup({ offset: 25 }).setHTML(popupText);
+    let popup = new maptilersdk.Popup({ offset: 25 }).setHTML(popupText);
 
-  const marker = new maptilersdk.Marker({ color: "pink" })
-    .setLngLat(middlePoint)
-    .setPopup(popup)
-    .addTo(map);
+    const marker = new maptilersdk.Marker({ color: "pink" })
+      .setLngLat(middlePoint)
+      .setPopup(popup)
+      .addTo(map);
+  } catch (error) {
+    console.error("Error:", error.message);
+    alert("An error ocurred. Please try again.");
+  }
 }
