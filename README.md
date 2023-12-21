@@ -42,9 +42,9 @@
 
 Contributions are welcome!
 
-## License
+# License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the [GNU Affero General Public License (AGPL)](LICENSE).
 
 ## Acknowledgments
 
